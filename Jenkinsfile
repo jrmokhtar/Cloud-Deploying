@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE_NAME = "project_app"  // Replace spaces with underscores or remove spaces
-        ECR_REPO_URL = "255058516901.dkr.ecr.us-east-1.amazonaws.com/ecr-repo"  // Update with your ECR repository URL
+        DOCKER_IMAGE_NAME = "Django"  // Replace spaces with underscores or remove spaces
+        ECR_REPO_URL = "533267335018.dkr.ecr.us-east-1.amazonaws.com/ecr-repo"  // Update with your ECR repository URL
         AWS_DEFAULT_REGION = "us-east-1"
         K8S_YAML_FILE = "deployment.yml"  // Update with the correct path to your Kubernetes YAML file
         DOCKER_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
