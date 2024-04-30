@@ -13,7 +13,7 @@ data "aws_ami" "admin_ami" {
   }
 
 }
-
+############################################################################
 resource "aws_instance" "jenkins_ec2" {
   ami           = data.aws_ami.admin_ami.id
   instance_type = "t2.micro"
