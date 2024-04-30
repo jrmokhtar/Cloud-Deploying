@@ -13,7 +13,7 @@ resource "aws_iam_policy" "elb_access_logs_policy" {
     ],
   })
 }
-
+############################################################################
 resource "aws_iam_role" "elb_role" {
   name = "LBRole"
   assume_role_policy = jsonencode({
@@ -29,7 +29,7 @@ resource "aws_iam_role" "elb_role" {
     ],
   })
 }
-
+############################################################################
 resource "aws_iam_role_policy_attachment" "attach_elb_policy" {
   policy_arn = aws_iam_policy.elb_access_logs_policy.arn
   role       = aws_iam_role.elb_role.name
