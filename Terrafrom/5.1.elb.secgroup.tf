@@ -1,6 +1,10 @@
 resource "aws_security_group" "elb_sg" {
-  name   = "alb-security-group"
-  vpc_id = aws_vpc.admin_vpc.id  
+  name   = var.security_group_name
+  vpc_id = var.vpc_id
+
+  # Add additional configuration as needed
+}
+ 
 
   ingress {
     from_port   = 80
