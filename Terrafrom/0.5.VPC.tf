@@ -1,7 +1,5 @@
 resource "aws_vpc" "admin_vpc" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_hostnames = "true"
-  tags = {
-    Name="admin_vpc"
-  }
+  cidr_block           = var.vpc_cidr_block
+  enable_dns_hostnames = var.enable_dns_hostnames
+  tags                 = var.vpc_tags
 }
