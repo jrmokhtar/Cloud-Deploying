@@ -1,33 +1,26 @@
 resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.admin_vpc.id
+  vpc_id = var.vpc_id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.vpc_igw.id
+    gateway_id = var.gateway_id
   }
 
   tags = {
     Name = "Public Route Table"
   }
 }
+
 ############################################################################
 resource "aws_route_table_association" "public_subnet_association" {
-  subnet_id      = aws_subnet.pubadmin_subnet.id
-  route_table_id = aws_route_table.public_rt.id
+  count          = length(var.public_subnet_ids)
+  subnet_id      = var.public_subnet_ids[count.index]
+  route_table_id = var.route_table_id
 }
-resource "aws_route_table_association" "public_subnet_association_2" {
-  subnet_id      = aws_subnet.EKS_1thpub.id
-  route_table_id = aws_route_table.public_rt.id
+
+resource "aws_route_table_association" "private_subnet_association" {
+  count          = length(var.private_subnet_ids)
+  subnet_id      = var.private_subnet_ids[count.index]
+  route_table_id = var.route_table_id
 }
-resource "aws_route_table_association" "public_subnet_association_3" {
-  subnet_id      = aws_subnet.EKS_2thpub.id
-  route_table_id = aws_route_table.public_rt.id
-}
-resource "aws_route_table_association" "private_route_association" {
-  subnet_id      = aws_subnet.EKS_1thprivate.id
-  route_table_id = aws_route_table.public_rt.id
-}
-resource "aws_route_table_association" "private_route_association_2" {
-  subnet_id      = aws_subnet.EKS_2thprivate.id
-  route_table_id = aws_route_table.public_rt.id
-}
+
