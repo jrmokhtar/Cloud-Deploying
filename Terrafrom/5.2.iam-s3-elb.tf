@@ -1,36 +1,25 @@
-
 resource "aws_iam_policy" "elb_access_logs_policy" {
-  name        = "LBAccessLogsPolicy"
-  description = "Policy to allow ELB to write access logs to S3"
+  name        = var.policy_name
+  description = var.policy_description
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Effect   = "Allow",
         Action   = ["s3:PutObject"],
-        Resource = "${aws_s3_bucket.lblogs.arn}/*",
+        Resource = "${var.s3_bucket_arn}/*",
       },
     ],
   })
 }
 ############################################################################
 resource "aws_iam_role" "elb_role" {
-  name = "LBRole"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect    = "Allow",
-        Principal = {
-          Service = "elasticloadbalancing.amazonaws.com"
-        },
-        Action = "sts:AssumeRole",
-      },
-    ],
-  })
+  name               = var.role_name
+  assume_role_policy = var.assume_role_policy
 }
+
 ############################################################################
 resource "aws_iam_role_policy_attachment" "attach_elb_policy" {
-  policy_arn = aws_iam_policy.elb_access_logs_policy.arn
-  role       = aws_iam_role.elb_role.name
+  policy_arn = var.policy_arn
+  role       = var.role_name
 }
