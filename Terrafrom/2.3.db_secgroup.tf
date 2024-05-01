@@ -1,36 +1,31 @@
- resource "aws_security_group" "RDS_secgroup" {
-   name        = "RDS_secgroup"
-   description = "Access port 80 and 3306"
-   vpc_id      = aws_vpc.admin_vpc.id
+resource "aws_security_group" "RDS_secgroup" {
+  name        = var.security_group_name
+  description = var.security_group_description
+  vpc_id      = var.vpc_id
 
-   tags = {
-     Name = "RDS security group"
-   }
+  tags = {
+    Name = "RDS security group"
+  }
 
-  
-   ingress {
-     description = "HTTP proxy access"
-     from_port   = 80
-     to_port     = 80
-     protocol    = "tcp"
-     cidr_blocks = ["0.0.0.0/0"]  # Allow traffic from any IP address
-   }
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
 
-
-   ingress {
-    description = "mySQL/aurora access"
-     from_port   = 3306
-     to_port     = 3306
-     protocol    = "tcp"
-     cidr_blocks = ["0.0.0.0/0"]  # Allow SSH traffic from any IP address
-   }
-
-   egress {
-     description = "allow all outbound access"
-     from_port   = 0
-     to_port     = 0
-     protocol    = "-1"  # Allow all outbound traffic
-     cidr_blocks = ["0.0.0.0/0"]
-   }
-
- }
+  dynamic "egress" {
+    for_each = var.egress_rules
+    content {
+      description = egress.value.description
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+    }
+  }
+}
