@@ -1,7 +1,7 @@
 resource "aws_security_group" "ec2_secgroup" {
   name        = "ec2_secgroup"
   description = "Access port 8080 and 22"
-  vpc_id      = aws_vpc.admin_vpc.id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "admin security group"
@@ -16,13 +16,12 @@ resource "aws_security_group" "ec2_secgroup" {
   }
 
   ingress {
-   description = "SSH access"
+    description = "SSH access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Allow SSH traffic from any IP address
   }
-
 
   egress {
     description = "allow all outbound access"
@@ -31,6 +30,4 @@ resource "aws_security_group" "ec2_secgroup" {
     protocol    = "-1"  # Allow all outbound traffic
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 }
-
