@@ -17,26 +17,16 @@ data "aws_iam_policy_document" "test_oidc_assume_role_policy" {
 }
 ###############################################################################################
 resource "aws_iam_role" "test_oidc" {
-  assume_role_policy = data.aws_iam_policy_document.test_oidc_assume_role_policy.json
-  name               = "test-oidc"
+  name               = var.role_name
+  assume_role_policy = var.assume_role_policy_document
 }
 ###############################################################################################
 
-resource "aws_iam_policy" "test-policy" {
-  name = "test-policy"
-
-  policy = jsonencode({
-    Statement = [{
-      Action = [
-        "s3:ListAllMyBuckets",
-        "s3:GetBucketLocation"
-      ]
-      Effect   = "Allow"
-      Resource = "arn:aws:s3:::*"
-    }]
-    Version = "2012-10-17"
-  })
+resource "aws_iam_policy" "test_policy" {
+  name   = var.policy_name
+  policy = var.policy_document
 }
+
 ###############################################################################################
 
 resource "aws_iam_role_policy_attachment" "test_attach" {
