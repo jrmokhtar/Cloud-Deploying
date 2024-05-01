@@ -6,7 +6,7 @@ resource "aws_subnet" "EKS_1thprivate" {
 
   tags = var.subnet_tags
 }
-
+ 
 #####################################################
 resource "aws_subnet" "EKS_2thprivate" {
   vpc_id                  = var.vpc_id
